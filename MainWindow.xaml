@@ -1,0 +1,228 @@
+﻿<Window x:Class="UrbanHelp.MainWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <Style x:Key="title_style" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#1fa3eb" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontFamily" Value="/Telerik.Windows.QuickStartUITheme;component/Fonts/MyriadPro-Light.otf#Myriad Pro Light" />
+            <Setter Property="FontWeight" Value="Light" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="textBlock_info">
+            <Setter Property="Foreground" Value="#FF7C7C7C" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="textBlock_number">
+            <Setter Property="Foreground" Value="#FF7C7C7C" />
+            <Setter Property="FontSize" Value="21" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="title_style_info">
+            <Setter Property="Foreground" Value="#25a0da" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="style_info">
+            <Setter Property="Foreground" Value="#333" />
+            <Setter Property="Margin" Value="0 0 0 5" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+        <DataTemplate x:Key="headerTemplate">
+            <TextBlock Text="{Binding Number}" />
+        </DataTemplate>
+        <DataTemplate x:Key="contentTemplate">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Image Grid.RowSpan="2"
+				       Width="83"
+				       Height="83"
+				       Margin="0 0 20 0"
+				       VerticalAlignment="Top"
+				       Source="{Binding Image}" />
+                <StackPanel Grid.Column="1" Margin="0 15 0 30">
+                    <TextBlock Style="{StaticResource title_style}" Text="{Binding Name}" />
+                    <TextBlock Style="{StaticResource textBlock_info}" Text="Sales Representative" />
+                </StackPanel>
+
+                <Grid Grid.Row="1"
+				      Grid.Column="1"
+				      VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource title_style_info}"
+					           Text="Company:" />
+                    <TextBlock Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="Energias de Portugal" />
+
+                    <TextBlock Grid.Row="1" 
+                               Style="{StaticResource title_style_info}"
+					           Text="Division:" />
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="Analysys" />
+
+                    <TextBlock Grid.Row="3"
+					           Style="{StaticResource title_style_info}"
+					           Text="Address: " />
+                    <TextBlock Grid.Row="3" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="507 - 20th Ave. E., 98112" />
+
+                    <TextBlock Grid.Row="4" 
+                               Style="{StaticResource title_style_info}"
+					           Text="City:" />
+                    <TextBlock Grid.Row="4" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="Seattle" />
+
+                    <TextBlock Grid.Row="5" 
+                               Style="{StaticResource title_style_info}"
+					           Text="State:" />
+                    <TextBlock Grid.Row="5" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="UT" />
+
+                    <TextBlock Grid.Row="6" 
+                               Style="{StaticResource title_style_info}"
+					           Text="Country:" />
+                    <TextBlock Grid.Row="6" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="US" />
+
+                    <TextBlock Grid.Row="7" 
+                               Style="{StaticResource title_style_info}"
+					           Text="Postcode:" />
+                    <TextBlock Grid.Row="7" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="84104" />
+
+                    <TextBlock Grid.Row="9"
+                               Style="{StaticResource title_style_info}"
+					           Text="Tel:" />
+                    <TextBlock Grid.Row="9" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="(206) 222 - 3333" />
+
+                    <TextBlock Grid.Row="10"
+					           Style="{StaticResource title_style_info}"
+					           Text="Email:" />
+                    <TextBlock Grid.Row="10" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="{Binding Email}" />
+
+                    <TextBlock Grid.Row="11"
+					           Style="{StaticResource title_style_info}"
+					           Text="Blog:" />
+                    <TextBlock Grid.Row="11" Grid.Column="1"
+					           Style="{StaticResource style_info}"
+					           Text="fuller.com" />
+                </Grid>
+
+                <Grid Grid.Column="1" Grid.Row="2" 
+                      Margin="0 60 0 0" Width="340"
+                      HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Statistics" Style="{StaticResource title_style}" Margin="0 0 0 15"/>
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Text="101" Style="{StaticResource textBlock_number}"/>
+                        <TextBlock Text="Activities" Style="{StaticResource textBlock_info}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Grid.Row="1">
+                        <TextBlock Text="70" Style="{StaticResource textBlock_number}"/>
+                        <TextBlock Text="Open Tasks" Style="{StaticResource textBlock_info}"/>
+                    </StackPanel>
+                    <StackPanel  Grid.Column="2" Grid.Row="1">
+                        <TextBlock Text="44" Style="{StaticResource textBlock_number}"/>
+                        <TextBlock Text="Opportunities" Style="{StaticResource textBlock_info}"/>
+                    </StackPanel>
+                </Grid>
+
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <telerik:RadTabControl Grid.Row="1"  VerticalAlignment="Top"
+				DisplayMemberPath="Content" DropDownDisplayMode="Visible" ScrollMode="Viewport" BorderThickness="0">
+            <telerik:RadTabItem DropDownContent="Организации" Header="Организации" >
+                <telerik:RadTabItem.Content>
+                    <telerik:RadTileView Margin="0"
+                        ColumnsCount="1" 
+                        IsAutoScrollingEnabled="True" 
+                        IsDockingEnabled="True" IsVirtualizing="True" 
+                        PreservePositionWhenMaximized="True"
+	                    RowHeight="140"
+	                    TileStateChangeTrigger="SingleClick"
+                        ItemTemplate="{StaticResource headerTemplate}"
+                        ContentTemplate="{StaticResource contentTemplate}"/>
+                    <!--<Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3"/>
+                            <ColumnDefinition Width="7*"/>
+                        </Grid.ColumnDefinitions>
+                        <telerik:Separator Grid.Column="1"/>
+                        <telerik:RadTreeView Grid.Column="0" Grid.Row="0">
+                            
+                        </telerik:RadTreeView>
+                    </Grid>-->
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem DropDownContent="Персоналии" Header="Персоналии">
+                <telerik:RadTabItem.Content>
+                    <Grid>
+
+                    </Grid>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem DropDownContent="Карта" Header="Карта">
+                <telerik:RadTabItem.Content>
+                    <Grid>
+                        
+                    </Grid>   
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>        
+        </Grid>
+</Window>
