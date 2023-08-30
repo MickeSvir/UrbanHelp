@@ -20,6 +20,8 @@ namespace UrbanHelp
                 {
                     services.AddSingleton<App>();
                     services.AddSingleton<MainWindow>();
+                    services.AddDbContext<AppContext>();
+                    services.AddHttpClient();
                 })
                 .Build();
             // получаем сервис - объект класса App

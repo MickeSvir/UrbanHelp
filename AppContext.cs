@@ -12,13 +12,15 @@ namespace UrbanHelp
     public class AppContext : DbContext
     {
         public DbSet<Person> Persons { get; set; } = null!;
-        public DbSet<Contact> Contacts { get; set; } = null!;
-        public DbSet<PersonFinCondition> PersonFinConditions { get; set; } = null!;
+       // public DbSet<Contact> Contacts { get; set; } = null!;
+       // public DbSet<PersonFinCondition> PersonFinConditions { get; set; } = null!;
         public DbSet<PersonChange> PersonChanges { get; set; } = null!;
         public DbSet<Relative> Relatives { get; set; } = null!;
         public AppContext() 
         {
-            Database.EnsureDeleted();
+
+           // Database.EnsureDeleted();           
+
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,55 +31,71 @@ namespace UrbanHelp
         {
 
             modelBuilder.Entity<Person>(PersonConfigure);
-            modelBuilder.Entity<CourtCase>(CourtCaseConfigure);
-            modelBuilder.Entity<Organization>(OrganizationConfigure);
+          //  modelBuilder.Entity<CourtCase>(CourtCaseConfigure);
+           // modelBuilder.Entity<Organization>(OrganizationConfigure);
             modelBuilder.Entity<PersonFinCondition>(PersonFinConditionConfigure);
-            modelBuilder.Entity<Contact>(ContactConfigure);
+           // modelBuilder.Entity<Contact>(ContactConfigure);
             modelBuilder.Entity<PersonChange>(PersonChangeConfigure);
             modelBuilder.Entity<Relative>(RelativeConfigure);
-            modelBuilder.Entity<GovProcurement>(GovProcurementConfigure);
+          //  modelBuilder.Entity<GovProcurement>(GovProcurementConfigure);
         }
 
-        private void GovProcurementConfigure(EntityTypeBuilder<GovProcurement> builder)
-        {
-            throw new NotImplementedException();
-        }
+        //private void GovProcurementConfigure(EntityTypeBuilder<GovProcurement> builder)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         private void RelativeConfigure(EntityTypeBuilder<Relative> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("Relatives").HasKey(p => p.Id);
+            builder.HasOne(p => p.Person)
+                .WithMany(c => c.Relatives)
+                .HasForeignKey(p => p.Person_Id);
         }
 
         private void PersonChangeConfigure(EntityTypeBuilder<PersonChange> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("PersonChanges").HasKey(p => p.Id);
+            builder.Property(p => p.AddDate).HasDefaultValueSql("DATETIME('now')");
+            builder.HasOne(p => p.Person)
+                .WithMany(c => c.PersonChanges)
+                .HasForeignKey(p => p.Person_Id);
         }
 
-        private void ContactConfigure(EntityTypeBuilder<Contact> builder)
-        {
-            throw new NotImplementedException();
-        }
+        //private void ContactConfigure(EntityTypeBuilder<Contact> builder)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         private void PersonFinConditionConfigure(EntityTypeBuilder<PersonFinCondition> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("FinConditions").HasKey(p => p.Id);
+            builder.HasOne(p => p.Person)
+                .WithMany(c => c.FinConditions)
+                .HasForeignKey(p => p.Person_Id);
         }
 
-        private void OrganizationConfigure(EntityTypeBuilder<Organization> builder)
-        {
-            throw new NotImplementedException();
-        }
+        //private void OrganizationConfigure(EntityTypeBuilder<Organization> builder)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        private void CourtCaseConfigure(EntityTypeBuilder<CourtCase> builder)
-        {
-            throw new NotImplementedException();
-        }
+        //private void CourtCaseConfigure(EntityTypeBuilder<CourtCase> builder)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         // конфигурация для типа User
         public void PersonConfigure(EntityTypeBuilder<Person> builder)
         {
-            builder.ToTable("Persons");
+            builder.ToTable("Persons").HasKey(p=>p.Id);
             
+            builder.Property(p=>p.AddDate).HasDefaultValueSql("DATETIME('now')");
+            builder.Property(p => p.Latitude).HasDefaultValue(0.0);
+            builder.Property(p => p.Longitude).HasDefaultValue(0.0);
+            builder.Property(p => p.DateOfBirth).HasDefaultValue("01.01.0001");
+
+
         }
         // конфигурация для типа Company
         //public void CompanyConfigure(EntityTypeBuilder<Company> builder)
