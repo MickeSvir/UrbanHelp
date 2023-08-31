@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 
 namespace UrbanHelp
 {
@@ -20,6 +21,7 @@ namespace UrbanHelp
                 {
                     services.AddSingleton<App>();
                     services.AddSingleton<MainWindow>();
+                    services.AddSingleton<Countries>();
                     services.AddDbContext<AppContext>();
                     services.AddHttpClient();
                 })
@@ -29,5 +31,18 @@ namespace UrbanHelp
             // запускаем приложения
             app?.Run();
         }
+        
+    }
+    public class Countries
+    {
+        public Countries()
+        {
+            using (StreamReader reader = new StreamReader("Data/Countries.txt"))
+            {
+                string line = reader.ReadToEnd();
+                Country.AddRange(line.Split(Environment.NewLine));
+            }
+        }
+        public List<string> Country { get; set; } = new();
     }
 }

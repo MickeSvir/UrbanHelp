@@ -22,6 +22,9 @@
   </ItemGroup>
   
   <ItemGroup>
+  <Page Include="FinConditions.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="MainWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
@@ -29,6 +32,8 @@
   <Compile Include="App.cs" />
   <Compile Include="AppContext.cs" />
   <Compile Include="Convertors.cs" />
+  <Compile Include="FinConditions.xaml.cs" />
+  <Compile Include="Localization.cs" />
   <Compile Include="MainWindow.xaml.cs">
     <DependentUpon>MainWindow.xaml</DependentUpon>
     <SubType>Code</SubType>
@@ -36,6 +41,12 @@
   <Compile Include="Models.cs" />
   <Compile Include="Program.cs" />
 </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Data\Countries.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Picture\pin_black.png" />

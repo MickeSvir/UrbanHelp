@@ -1,0 +1,48 @@
+﻿<Window x:Class="UrbanHelp.FinConditions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UrbanHelp"
+        mc:Ignorable="d"
+        Title="FinConditions" Height="396" Width="206" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <telerik:RadGridView x:Name="rgvFinCond"
+                             GroupRenderMode="Flat"
+							 ColumnWidth="*"
+							 AutoGenerateColumns="False"
+							 HorizontalAlignment="Center"
+							 CanUserFreezeColumns="True"                             
+							 RowIndicatorVisibility="Collapsed"
+                             CanUserSortGroups="False"
+                             ShowGroupPanel = "False"
+                             CanUserSearch="False"
+                             CanUserGroupColumns="False"
+                             CanUserReorderColumns="False"
+                             CanUserResizeColumns="False"
+                             CanUserInsertRows="False"
+                             CanUserDeleteRows="False"
+                             FrozenColumnCount="1"
+                             CanUserSortColumns="False" DragElementAction="None">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Год"
+											DataMemberBinding="{Binding Year}"
+											Width="60" IsSearchable="False" IsCellMergingEnabled="False" IsResizable="False" IsReorderable="False" IsReadOnly="True"
+                                            />
+                <telerik:GridViewDataColumn Header="Доход"
+											DataMemberBinding="{Binding Condition, Mode=TwoWay}" DataFormatString="{}{0:G}"/>
+
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <DockPanel Grid.Row="1">
+            <telerik:RadButton DockPanel.Dock="Right" Height="26" Content="Сохранить" HorizontalAlignment="Right" Margin="0,5,10,5" Padding="5,5,5,5" Click="RadButton_Click"/>
+            <telerik:RadButton DockPanel.Dock="Right" Height="26" Content="Отмена" HorizontalAlignment="Right" Margin="0,5,10,5" Padding="5,5,5,5" UseLayoutRounding="True" Click="RadButton_Click_1"/>
+        </DockPanel>
+
+    </Grid>
+</Window>

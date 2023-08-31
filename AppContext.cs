@@ -7,19 +7,27 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using Telerik.Barcode;
+
 namespace UrbanHelp
 {
     public class AppContext : DbContext
     {
+        
+        public DbSet<Organization> Organizations { get; set; } = null!;
+        public DbSet<OrganizationChange> OrganizationChanges { get; set; } = null!;
+        public DbSet<GovProcurement> GovProcurements { get; set; } = null!;
+        public DbSet<CourtCase> CourtCases { get; set; } = null!;
+        public DbSet<PersonFinCondition> PersonFinConditions { get; set; } = null!;
         public DbSet<Person> Persons { get; set; } = null!;
-       // public DbSet<Contact> Contacts { get; set; } = null!;
-       // public DbSet<PersonFinCondition> PersonFinConditions { get; set; } = null!;
         public DbSet<PersonChange> PersonChanges { get; set; } = null!;
         public DbSet<Relative> Relatives { get; set; } = null!;
+        //public DbSet<PhoneNumber> PhoneNumbers { get; set; } = null!;
+        //public DbSet<EMail> EMails { get; set; } = null!;
         public AppContext() 
         {
 
-           // Database.EnsureDeleted();           
+            Database.EnsureDeleted();           
 
             Database.EnsureCreated();
         }
@@ -31,19 +39,47 @@ namespace UrbanHelp
         {
 
             modelBuilder.Entity<Person>(PersonConfigure);
-          //  modelBuilder.Entity<CourtCase>(CourtCaseConfigure);
-           // modelBuilder.Entity<Organization>(OrganizationConfigure);
-            modelBuilder.Entity<PersonFinCondition>(PersonFinConditionConfigure);
-           // modelBuilder.Entity<Contact>(ContactConfigure);
+            modelBuilder.Entity<CourtCase>(CourtCaseConfigure);
+            modelBuilder.Entity<Organization>(OrganizationConfigure);
+            modelBuilder.Entity<OrganizationChange>(OrganizationChangeConfigure);
+            modelBuilder.Entity<PersonFinCondition>(PersonFinConditionConfigure);            
             modelBuilder.Entity<PersonChange>(PersonChangeConfigure);
             modelBuilder.Entity<Relative>(RelativeConfigure);
-          //  modelBuilder.Entity<GovProcurement>(GovProcurementConfigure);
+            modelBuilder.Entity<GovProcurement>(GovProcurementConfigure);
+            //modelBuilder.Entity<PhoneNumber>(PhoneNumberConfigure);
+            //modelBuilder.Entity<EMail>(EMailConfigure);
         }
 
-        //private void GovProcurementConfigure(EntityTypeBuilder<GovProcurement> builder)
+        //private void EMailConfigure(EntityTypeBuilder<EMail> builder)
+        //{
+        //    builder.ToTable("Relatives").HasKey(p => p.Id);
+        //    builder.HasOne(p => p.Person)
+        //        .WithMany(c => c.Relatives)
+        //        .HasForeignKey(p => p.Person_Id);
+        //    ;
+        //}
+
+        //private void PhoneNumberConfigure(EntityTypeBuilder<PhoneNumber> builder)
         //{
         //    throw new NotImplementedException();
         //}
+
+        private void OrganizationChangeConfigure(EntityTypeBuilder<OrganizationChange> builder)
+        {
+            builder.ToTable("OrganizationChanges").HasKey(p => p.Id);
+            builder.Property(o => o.AddDate).HasDefaultValueSql("DATETIME('now')");
+            builder.HasOne(o => o.Organization)
+                .WithMany(c => c.OrganizationChanges)
+                .HasForeignKey(o => o.Organization_Id);
+        }
+
+        private void GovProcurementConfigure(EntityTypeBuilder<GovProcurement> builder)
+        {
+            builder.ToTable("GovProcurements").HasKey(p => p.Id);
+            builder.HasOne(o => o.Organization)
+                .WithMany(g => g.GovProcurements)
+                .HasForeignKey(o => o.Organization_Id);
+        }
 
         private void RelativeConfigure(EntityTypeBuilder<Relative> builder)
         {
@@ -75,18 +111,25 @@ namespace UrbanHelp
                 .HasForeignKey(p => p.Person_Id);
         }
 
-        //private void OrganizationConfigure(EntityTypeBuilder<Organization> builder)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        private void OrganizationConfigure(EntityTypeBuilder<Organization> builder)
+        {
+            builder.ToTable("Organizations").HasKey(p => p.Id);
+            builder.Property(o => o.AddDate).HasDefaultValueSql("DATETIME('now')");
+            builder.Property(o => o.Latitude).HasDefaultValue(0.0);
+            builder.Property(o => o.Longitude).HasDefaultValue(0.0);
+            builder.Property(o => o.DateOfBirth).HasDefaultValue("01.01.0001");
+        }
 
-        //private void CourtCaseConfigure(EntityTypeBuilder<CourtCase> builder)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        private void CourtCaseConfigure(EntityTypeBuilder<CourtCase> builder)
+        {
+            builder.ToTable("CourtCases").HasKey(p => p.Id);
+            builder.HasOne(o => o.Organization)
+                .WithMany(c => c.CourtCases)
+                .HasForeignKey(o => o.Organization_Id);
+        }
 
         // конфигурация для типа User
-        public void PersonConfigure(EntityTypeBuilder<Person> builder)
+        private void PersonConfigure(EntityTypeBuilder<Person> builder)
         {
             builder.ToTable("Persons").HasKey(p=>p.Id);
             

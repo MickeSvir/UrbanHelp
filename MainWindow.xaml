@@ -3,7 +3,10 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:gmaps="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
                 xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                Title="MainWindow" Height="350" Width="525" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
+                xmlns:chart="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Chart"			    
+			    xmlns:chartView="clr-namespace:Telerik.Windows.Controls.ChartView;assembly=Telerik.Windows.Controls.Chart"
+           
+                Title="MainWindow" Height="600" Width="800" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="title_style" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#1fa3eb" />
@@ -39,7 +42,7 @@
     <Grid>
         <telerik:RadTabControl Grid.Row="1"  VerticalAlignment="Top"
 				DropDownDisplayMode="Visible" ScrollMode="Viewport" BorderThickness="0">
-            <telerik:RadTabItem DropDownContent="Организации" Header="Организации" >
+            <!--<telerik:RadTabItem DropDownContent="Организации" Header="Организации" >
                 <telerik:RadTabItem.Content>
                    
                     <Grid x:Name="grdOrganization">
@@ -53,7 +56,17 @@
                         </Grid.ColumnDefinitions>
                         <telerik:Separator Grid.Column="1"/>
                         <telerik:RadTreeView x:Name="TVOrganization" Grid.Column="0" Grid.Row="0">
-                            
+                            <telerik:RadContextMenu.ContextMenu>
+                                <telerik:RadContextMenu>
+                                    <telerik:RadMenuItem x:Name="mnuOrgsAdd" Header="Создать" Click="mnuOrgsAdd_Click" />
+                                    <telerik:RadMenuItem x:Name="mnuOrgsRem" Header="Удалить" />
+                                </telerik:RadContextMenu>
+                            </telerik:RadContextMenu.ContextMenu>
+                            <telerik:RadTreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes}">
+                                    <TextBlock Text="{Binding Title}" />
+                                </HierarchicalDataTemplate>
+                            </telerik:RadTreeView.ItemTemplate>
                         </telerik:RadTreeView>
                         <GridSplitter Grid.Column="1" />
                         <StackPanel x:Name="spOrganization" Orientation="Vertical" Grid.Column="2" Grid.Row="5">
@@ -61,10 +74,10 @@
                         </StackPanel>
                     </Grid>
                 </telerik:RadTabItem.Content>
-            </telerik:RadTabItem>
-            <telerik:RadTabItem DropDownContent="Персоналии" Header="Персоналии">
+            </telerik:RadTabItem>-->
+            <telerik:RadTabItem DropDownContent="Организации и Персоналии" Header="Организации и Персоналии">
                 <telerik:RadTabItem.Content>
-                    <Grid x:Name="grdPerson" ShowGridLines="False">
+                    <Grid x:Name="grdItem" ShowGridLines="False">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
@@ -73,22 +86,24 @@
                             <ColumnDefinition Width="3"/>
                             <ColumnDefinition Width="7*"/>
                         </Grid.ColumnDefinitions>
-                        <telerik:RadTreeView x:Name="TVPerson" Grid.Column="0" Grid.Row="0" ItemClick="TVPerson_ItemClick">
+                        <telerik:RadTreeView x:Name="TVItem" Grid.Column="0" Grid.Row="0" ItemClick="TV_ItemClick">
                             <telerik:RadContextMenu.ContextMenu>
-                                <telerik:RadContextMenu>
-                                    <telerik:RadMenuItem x:Name="mnuPersAdd" Header="Создать" Click="mnuPersAdd_Click" />
-                                    <telerik:RadMenuItem x:Name="mnuPersRem" Header="Удалить" />
+                                <telerik:RadContextMenu Opened="RadContextMenu_Opened">
+                                    <telerik:RadMenuItem x:Name="mnuAdd" Header="Создать" Click="mnuAdd_Click" />
+                                    <telerik:RadMenuItem x:Name="mnuRem" Header="Удалить" />
                                 </telerik:RadContextMenu>
                             </telerik:RadContextMenu.ContextMenu>
                             <telerik:RadTreeView.ItemTemplate>
-                                <HierarchicalDataTemplate ItemsSource="{Binding Path=Persons}">
-                                    <TextBlock Text="{Binding FIO}" />
+                                <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes}">
+                                    <TextBlock Text="{Binding Title}" />
                                 </HierarchicalDataTemplate>
                             </telerik:RadTreeView.ItemTemplate>
                         </telerik:RadTreeView>
                         
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" />
-                        <StackPanel x:Name="spPerson" Orientation="Vertical" Grid.Column="2" Grid.Row="5" Visibility="Hidden">
+                        
+                        <StackPanel x:Name="spPerson" Orientation="Vertical" Grid.Column="2" Grid.Row="5" Visibility="Hidden" CanVerticallyScroll="True">
+                            
                             <DockPanel Margin="5,5,5,0">
                                 <TextBlock DockPanel.Dock="Top" Text="История изменений:" HorizontalAlignment="Left"/>
                                 <StackPanel DockPanel.Dock="Bottom">
@@ -112,7 +127,174 @@
                                 <telerik:RadDateTimePicker DockPanel.Dock="Right" x:Name="dtpPDOB" InputMode="DatePicker" DisplayFormat="Long" Culture="ru-RU" IsTooltipEnabled="False" 
                                                            SelectedValue="{Binding DateOfBirth}"/>
                             </DockPanel>
-                            <telerik:RadButton x:Name="btnSave" Content="Сохранить" Click="btnSave_Click"/>
+                            <Border Margin="5,5,5,0" BorderBrush="Black" CornerRadius="5" BorderThickness="1">
+                                <telerik:RadExpander x:Name="expConnect" IsExpanded="False" VerticalContentAlignment="Top"
+								 telerik:AnimationManager.IsAnimationEnabled="False" BorderThickness="1,1,1,1" Expanded="expConnect_Expanded">
+
+                                    <telerik:RadExpander.Header>
+                                        <TextBlock Text="Контактная информация" />
+                                    </telerik:RadExpander.Header>
+                                    <telerik:RadExpander.Content>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="10"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="5"/>
+                                            </Grid.ColumnDefinitions>
+                                            <telerik:RadGridView Grid.Column="1" x:Name="rgvPhone" 
+                                      GroupRenderMode="Flat"  
+                                      ColumnWidth="*"
+                                      AutoGenerateColumns="False"
+                                      RowIndicatorVisibility="Collapsed"
+                                         CanUserSortGroups="False"
+                                         ShowGroupPanel = "False"
+                                         CanUserInsertRows="True" 
+                                         CanUserDeleteRows="True" 
+                                         CanUserSortColumns="False" 
+                                         DragElementAction="None"
+                                      NewRowPosition="Bottom" IsFilteringAllowed="False" 
+                                        >
+
+                                                <telerik:RadGridView.Columns>
+                                                    <telerik:GridViewDataColumn x:Name="colPhone" Header="Телефон"
+											            DataMemberBinding="{Binding Value}"
+                                            />
+
+                                                </telerik:RadGridView.Columns>
+                                            </telerik:RadGridView>
+                                            <telerik:RadGridView Grid.Column="3" x:Name="rgvEMail"
+                                         GroupRenderMode="Flat"
+							             ColumnWidth="*"
+							             AutoGenerateColumns="False"                            
+							             RowIndicatorVisibility="Collapsed"
+                                         CanUserSortGroups="False"
+                                         ShowGroupPanel = "False"
+                                         CanUserInsertRows="True" 
+                                         CanUserDeleteRows="True" 
+                                         CanUserSortColumns="False" 
+                                         IsFilteringAllowed="False" 
+                                         DragElementAction="None" NewRowPosition="Bottom">
+                                                <telerik:RadGridView.Columns>
+                                                    <telerik:GridViewDataColumn Header="EMail"
+											           DataMemberBinding="{Binding Value}"
+											
+                                            />
+
+                                                </telerik:RadGridView.Columns>
+                                            </telerik:RadGridView>
+                                        </Grid>
+                                    </telerik:RadExpander.Content>
+                                </telerik:RadExpander>
+                            </Border>
+                            <Border Margin="5,5,5,0" BorderBrush="Black" CornerRadius="5" BorderThickness="1">
+                                <telerik:RadExpander x:Name="expRelav" IsExpanded="False" VerticalContentAlignment="Top"
+								 telerik:AnimationManager.IsAnimationEnabled="False" BorderThickness="1,1,1,1" Expanded="expConnect_Expanded">
+
+                                    <telerik:RadExpander.Header>
+                                        <TextBlock Text="Родственники" />
+                                    </telerik:RadExpander.Header>
+                                    <telerik:RadExpander.Content>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="10"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="5"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                </Grid>
+                                    </telerik:RadExpander.Content>
+                                </telerik:RadExpander>
+                            </Border>                            
+                            <Border Margin="5,5,5,0" BorderBrush="Black" CornerRadius="5" BorderThickness="1">
+                                <telerik:RadExpander x:Name="expPers" DockPanel.Dock="Top" IsExpanded="False" VerticalContentAlignment="Top"
+								 telerik:AnimationManager.IsAnimationEnabled="False" Expanded="expPers_Expanded" BorderThickness="1,1,1,1">
+                                    
+                                    <telerik:RadExpander.Header>
+                                        <TextBlock x:Name="expCaption" Text="Финансовое состояние" />
+                                    </telerik:RadExpander.Header>
+                                    <telerik:RadExpander.Content>
+                                        <StackPanel>
+                                            
+                                            <chart:RadCartesianChart x:Name="RadCartesianChart"
+								         Palette="Fluent"
+								         Margin="0,18,0,0">
+                                                <chartView:BarSeries x:Name="finPerson" 
+								                ValueBinding="Condition"
+								                CategoryBinding="Year"								    
+								                FontFamily="Segoe UI"
+								                FontSize="10"
+                                                ShowLabels="True"
+                                                >
+                                                <chartView:BarSeries.HorizontalAxis>
+                                                    <chartView:CategoricalAxis/>
+                                                </chartView:BarSeries.HorizontalAxis>
+                                                <chartView:BarSeries.VerticalAxis>
+                                                    <chartView:LinearAxis/>
+                                                </chartView:BarSeries.VerticalAxis>
+                                            </chartView:BarSeries>
+                                            </chart:RadCartesianChart>
+                                            <telerik:RadButton x:Name="btnUpdFC" Content="Изменить" Click="btnUpdFC_Click"/>
+                                        </StackPanel>
+                                    </telerik:RadExpander.Content>
+                                </telerik:RadExpander>
+
+                            </Border>
+                            <DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Left" Text="Страна:" HorizontalAlignment="Left"/>
+                                <telerik:RadComboBox DockPanel.Dock="Right" x:Name="cmbOCountry" Text="{Binding Country}"/>
+                            </DockPanel>
+                            <DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Left" Text="Город:" HorizontalAlignment="Left"/>
+                                <TextBox DockPanel.Dock="Right" x:Name="txtOCity"  Text="{Binding City}"/>
+                            </DockPanel>
+                            <DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Left" Text="Индех:" HorizontalAlignment="Left"/>
+                                <TextBox DockPanel.Dock="Right" x:Name="txtOZIPCode"  Text="{Binding ZIPCode}"/>
+                            </DockPanel>
+                            <DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Left" Text="Адресс:" HorizontalAlignment="Left"/>
+                                <TextBox DockPanel.Dock="Right" x:Name="txtAdress" Text="{Binding Adress}"/>
+                            </DockPanel>
+                            <telerik:RadButton x:Name="btnSave" Content="Сохранить" Click="btnSave_Click" Margin="0,20,0,0"/>
+                        </StackPanel>
+                        
+                        <StackPanel x:Name="spOrg" Orientation="Vertical" Grid.Column="2" Grid.Row="5" Visibility="Hidden" CanVerticallyScroll="True">
+                            <DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Top" Text="История изменений:" HorizontalAlignment="Left"/>
+                                <StackPanel DockPanel.Dock="Bottom">
+                                    <telerik:RadCollectionNavigator x:Name="colNavOChange" Source="{Binding OrganizationChanges}" CommandButtonsVisibility="Navigation"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Left" Text="Название:" HorizontalAlignment="Left"/>
+                                <TextBox DockPanel.Dock="Right" x:Name="txtOTitle"  Text="{Binding Title}"/>
+                            </DockPanel>
+                            <!--<DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Left" Text="Имя:" HorizontalAlignment="Left"/>
+                                <TextBox DockPanel.Dock="Right" x:Name="txtPName"  Text="{Binding Name}"/>
+                            </DockPanel>
+                            <DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Left" Text="Отчество:" HorizontalAlignment="Left"/>
+                                <TextBox DockPanel.Dock="Right" x:Name="txtPSurName"  Text="{Binding Surname}"/>
+                            </DockPanel>-->
+                            <DockPanel Margin="5,5,5,0">
+                                <TextBlock DockPanel.Dock="Left" Text="Дата создания:" HorizontalAlignment="Left"/>
+                                <telerik:RadDateTimePicker DockPanel.Dock="Right" x:Name="dtpODOB" InputMode="DatePicker" DisplayFormat="Long" Culture="ru-RU" IsTooltipEnabled="False" 
+                                                           SelectedValue="{Binding DateOfBirth}"/>
+                            </DockPanel>
+                            <telerik:RadButton x:Name="btnOSave" Content="Сохранить" Click="btnOSave_Click"/>
                         </StackPanel>
                     </Grid>
                 </telerik:RadTabItem.Content>

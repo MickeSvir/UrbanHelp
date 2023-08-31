@@ -21,4 +21,18 @@ namespace UrbanHelp
             return (Visibility)value== Visibility.Hidden?"0":"1";
         }
     }
+
+    public class StringToListConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return string.IsNullOrEmpty(value.ToString()) ? new List<string>() : 
+                value.ToString().Split(',',StringSplitOptions.RemoveEmptyEntries).ToList();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return string.Join(',',value);
+        }
+    }
 }
