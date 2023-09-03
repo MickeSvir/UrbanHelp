@@ -1,0 +1,35 @@
+﻿<Window x:Class="UrbanHelp.frmDegree"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:local="clr-namespace:UrbanHelp"
+        mc:Ignorable="d"
+        Title="Выбор степени родства" Height="315" Width="212" ResizeMode="NoResize" 
+        WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <telerik:RadGridView x:Name="rgvSelect" ShowGroupPanel="False" IsFilteringAllowed="False" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserFreezeColumns="False"
+                             RowIndicatorVisibility="Collapsed"
+                             ColumnWidth="*"
+   CanUserSortGroups="False"
+   CanUserInsertRows="False" 
+   CanUserDeleteRows="False"
+   IsReadOnly="True"
+   DragElementAction="None" MouseDoubleClick="rgvSelect_MouseDoubleClick">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn x:Name="colSelect" Header="Степень родства"
+					 DataMemberBinding="{Binding Value}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <telerik:Separator Grid.Row="1" HorizontalContentAlignment="Stretch"/>
+        <DockPanel Grid.Row="2" HorizontalAlignment="Right">
+            <telerik:RadButton x:Name="cmbDegreeCancel" Content="Отмена" DockPanel.Dock="Right" Width="50" Margin="0,5,10,5" IsCancel="True" Click="cmbDegreeCancel_Click"/>
+        </DockPanel>
+    </Grid>
+</Window>

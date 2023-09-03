@@ -16,7 +16,16 @@ namespace UrbanHelp
             {
                 case "GridViewAlwaysVisibleNewRow":
                     return "Нажмите для добавления новой строки";
-
+                case "ChartViewNoData":
+                    return "Нет данных для построения графика";
+                case "Close":
+                    return "Закрыть";
+                case "EnterDate":
+                    return "Введите дату";
+                case "Error":
+                    return "Ошибка";
+                case "Today":
+                    return "Сегодня";
             }
             return base.GetStringOverride(key);
         }

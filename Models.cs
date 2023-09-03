@@ -23,6 +23,7 @@ namespace UrbanHelp
         public string Adress { get; set; } = null;
         public string PhoneNumber { get; set; } = null;
         public string EMail { get; set; } = null;
+        //широта
         public double Latitude { get; private set; }
         public double Longitude { get; private set; }
         [JsonIgnore]
@@ -49,16 +50,24 @@ namespace UrbanHelp
         public string Name { get; set; }
         public long Price { get; set; }
     }
+
+    //судебные дела
     public class CourtCase
     {
         public string Id { get; set; }
         public int Organization_Id { get; set; }
         public Organization Organization { get; set; }
         public string Num { get; set; }
+        
+        //Об интеллектуальной собственности, Об банкротстве и т.д.
         public string Category { get; set; }
+        //кем выступаеи истец/ответчик/третье лицо
         public string Type { get; set; }
+        //завершенно, разбирается...
         public string Status { get; set; }
+        //истец
         public string Plaintiff { get; set; }
+        //ответчик
         public string Defendant { get; set; }
     }
  
@@ -68,12 +77,14 @@ namespace UrbanHelp
         public int Id { get; set; }
         public int Person_Id { get; set; }
         public Person Person { get; set; }
+        //степень родства
         public string Degree { get; set; }
         public string Name { get; set; }
         public string Family { get; set; }
         public string Surname { get; set; } = null;
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; } = null;
     }
+    
     public class PersonFinCondition
     {
         public int Id { get; set; }
@@ -94,21 +105,25 @@ namespace UrbanHelp
     public class Person
     {
         public int Id { get; set; }
-        //public int Relativ_Id { get; set; }
-        //public string Degree { get; set; } = null;
         public string Name { get; set; }
         public string Family { get; set; }
         public string Surname { get; set; } = null;
+        public bool Male { get; set; } = true;
         [NotMapped]
         [JsonIgnore]
-        public string FIO => $"{Family} {Name?.ToUpper()[..1]}.{(string.IsNullOrEmpty(Surname) ? string.Empty:$" {Surname?.ToUpper()?[..1]}.")}" ;
+        public string FIO => $"{Family} {Name?.ToUpper()[..1]}." +
+            $"{(string.IsNullOrEmpty(Surname) ? string.Empty:$" {Surname?.ToUpper()?[..1]}.")}" ;
+        [NotMapped]
+        [JsonIgnore]
+        public string FullFIO => $"{Family} {Name}{(string.IsNullOrEmpty(Surname) ? string.Empty : $" {Surname?.ToUpper()}")}";
         public string Country { get; set; } = null;
         public string City { get; set; } = null;
         public string ZIPCode { get; set; } = null;
         public string Adress { get; set; } = null;
-        public double Latitude { get; private set; }
-        public double Longitude { get; private set; }
-        public DateTime DateOfBirth { get; set; }
+        //широта
+        public double Latitude { get;  set; }
+        public double Longitude { get;  set; }
+        public DateTime? DateOfBirth { get; set; } = null;
         public string PhoneNumber { get;  set; } = null;
         public string EMail { get;  set; } = null;               
         [JsonIgnore]

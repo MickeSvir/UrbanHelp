@@ -25,6 +25,9 @@
   <Page Include="FinConditions.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
+  <Page Include="frmDegree.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="MainWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
@@ -33,6 +36,7 @@
   <Compile Include="AppContext.cs" />
   <Compile Include="Convertors.cs" />
   <Compile Include="FinConditions.xaml.cs" />
+  <Compile Include="frmDegree.xaml.cs" />
   <Compile Include="Localization.cs" />
   <Compile Include="MainWindow.xaml.cs">
     <DependentUpon>MainWindow.xaml</DependentUpon>
